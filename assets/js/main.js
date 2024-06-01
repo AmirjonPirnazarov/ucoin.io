@@ -34,40 +34,34 @@ if(count == null){
     localStorage.setItem('count' , '1')
 }
 
-image.addEventListener('click' , (e)=> {
-
-    let x = e.offsetX;
-    let y = e.offsetY;
-
+image.addEventListener('touchstart', (e) => {
+    let x = e.touches[0].clientX;
+    let y = e.touches[0].clientY;
 
     navigator.vibrate(5);
 
     coins = localStorage.getItem('coins');
     power = localStorage.getItem('power');
-    
-    if(Number(power) > 0){
-        localStorage.setItem('coins' , `${Number(coins) + 1}`);
-        h1.textContent = `${(Number(coins) + 1).toLocaleString()}`;
-    
-        localStorage.setItem('power' , `${Number(power) - 1}`);
-        body.querySelector('#power').textContent = `${Number(power) - 1}`;
-    } 
 
-    if(x < 150 & y < 150){
+    if (Number(power) > 0) {
+        localStorage.setItem('coins', `${Number(coins) + 1}`);
+        h1.textContent = `${(Number(coins) + 1).toLocaleString()}`;
+
+        localStorage.setItem('power', `${Number(power) - 1}`);
+        body.querySelector('#power').textContent = `${Number(power) - 1}`;
+    }
+
+    if (x < 150 & y < 150) {
         image.style.transform = 'translate(-0.25rem, -0.25rem) skewY(-10deg) skewX(5deg)';
-    }
-    else if (x < 150 & y > 150){
+    } else if (x < 150 & y > 150) {
         image.style.transform = 'translate(-0.25rem, 0.25rem) skewY(-10deg) skewX(5deg)';
-    }
-    else if (x > 150 & y > 150){
+    } else if (x > 150 & y > 150) {
         image.style.transform = 'translate(0.25rem, 0.25rem) skewY(10deg) skewX(-5deg)';
-    }
-    else if (x > 150 & y < 150){
+    } else if (x > 150 & y < 150) {
         image.style.transform = 'translate(0.25rem, -0.25rem) skewY(10deg) skewX(-5deg)';
     }
 
-
-    setTimeout(()=>{
+    setTimeout(() => {
         image.style.transform = 'translate(0px, 0px)';
     }, 100);
 
