@@ -43,8 +43,8 @@ function handleClickOrTouch(e) {
 
     let x, y;
     if (e.type === 'touchstart') {
-        x = e.touches[0].clientX;
-        y = e.touches[0].clientY;
+        x = e.touches[0].clientX - e.target.getBoundingClientRect().left;
+        y = e.touches[0].clientY - e.target.getBoundingClientRect().top;
     } else {
         x = e.offsetX;
         y = e.offsetY;
@@ -78,12 +78,44 @@ function handleClickOrTouch(e) {
     }, 100);
 
     body.querySelector('.progress').style.width = `${(100 * power) / total}%`;
+
+    animateNumber(); // Вызов функции анимации
+}
+
+function animateNumber() {
+    var numberElement = document.getElementById('animated-number');
+    numberElement.classList.remove('hidden');
+
+    // Сбрасываем анимацию
+    numberElement.style.animation = 'none';
+    numberElement.offsetHeight; // Перезапуск анимации
+    numberElement.style.animation = null;
+
+    setTimeout(() => {
+        numberElement.classList.add('hidden');
+    }, 1000); // Время, через которое элемент снова скрывается
+
+    // Начальная позиция анимации
+    numberElement.style.top = '50%'; 
+    numberElement.style.left = '50%'; 
+    numberElement.classList.remove('hidden');
 }
 
 // Установка начальных значений прогресса
 document.addEventListener('DOMContentLoaded', () => {
     body.querySelector('.progress').style.width = `${(100 * localStorage.getItem('power')) / total}%`;
 });
+
+setInterval(() => {
+    count = localStorage.getItem('count');
+    power = localStorage.getItem('power');
+    if (Number(total) > power) {
+        localStorage.setItem('power', `${Number(power) + Number(count)}`);
+        body.querySelector('#power').textContent = `${Number(power) + Number(count)}`;
+        body.querySelector('.progress').style.width = `${(100 * power) / total}%`;
+    }
+}, 1000);
+
 
 
 setInterval(()=> {
