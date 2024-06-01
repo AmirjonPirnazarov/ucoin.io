@@ -34,9 +34,21 @@ if(count == null){
     localStorage.setItem('count' , '1')
 }
 
-image.addEventListener('touchstart', (e) => {
-    let x = e.touches[0].clientX;
-    let y = e.touches[0].clientY;
+// Добавляем обработчик событий для клика и касания
+image.addEventListener('click', handleClickOrTouch);
+image.addEventListener('touchstart', handleClickOrTouch);
+
+function handleClickOrTouch(e) {
+    e.preventDefault(); // Предотвращаем возможные стандартные действия
+
+    let x, y;
+    if (e.type === 'touchstart') {
+        x = e.touches[0].clientX;
+        y = e.touches[0].clientY;
+    } else {
+        x = e.offsetX;
+        y = e.offsetY;
+    }
 
     navigator.vibrate(5);
 
@@ -51,13 +63,13 @@ image.addEventListener('touchstart', (e) => {
         body.querySelector('#power').textContent = `${Number(power) - 1}`;
     }
 
-    if (x < 150 & y < 150) {
+    if (x < 150 && y < 150) {
         image.style.transform = 'translate(-0.25rem, -0.25rem) skewY(-10deg) skewX(5deg)';
-    } else if (x < 150 & y > 150) {
+    } else if (x < 150 && y > 150) {
         image.style.transform = 'translate(-0.25rem, 0.25rem) skewY(-10deg) skewX(5deg)';
-    } else if (x > 150 & y > 150) {
+    } else if (x > 150 && y > 150) {
         image.style.transform = 'translate(0.25rem, 0.25rem) skewY(10deg) skewX(-5deg)';
-    } else if (x > 150 & y < 150) {
+    } else if (x > 150 && y < 150) {
         image.style.transform = 'translate(0.25rem, -0.25rem) skewY(10deg) skewX(-5deg)';
     }
 
@@ -66,7 +78,13 @@ image.addEventListener('touchstart', (e) => {
     }, 100);
 
     body.querySelector('.progress').style.width = `${(100 * power) / total}%`;
+}
+
+// Установка начальных значений прогресса
+document.addEventListener('DOMContentLoaded', () => {
+    body.querySelector('.progress').style.width = `${(100 * localStorage.getItem('power')) / total}%`;
 });
+
 
 setInterval(()=> {
     count = localStorage.getItem('count')
