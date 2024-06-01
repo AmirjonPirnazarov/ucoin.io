@@ -34,89 +34,53 @@ if(count == null){
     localStorage.setItem('count' , '1')
 }
 
-// Добавляем обработчик событий для клика и касания
-image.addEventListener('click', handleClickOrTouch);
-image.addEventListener('touchstart', handleClickOrTouch);
-
-function handleClickOrTouch(e) {
-    e.preventDefault(); // Предотвращаем возможные стандартные действия
-
+const handleClick = (e) => {
     let x, y;
-    if (e.type === 'touchstart') {
-        x = e.touches[0].clientX - e.target.getBoundingClientRect().left;
-        y = e.touches[0].clientY - e.target.getBoundingClientRect().top;
-    } else {
+    if (e.type === 'click') {
         x = e.offsetX;
         y = e.offsetY;
+    } else if (e.type === 'touchstart') {
+        const rect = e.target.getBoundingClientRect();
+        const touch = e.touches[0];
+        x = touch.clientX - rect.left;
+        y = touch.clientY - rect.top;
     }
 
     navigator.vibrate(5);
 
     coins = localStorage.getItem('coins');
     power = localStorage.getItem('power');
-
-    if (Number(power) > 0) {
-        localStorage.setItem('coins', `${Number(coins) + 1}`);
+    
+    if(Number(power) > 0){
+        localStorage.setItem('coins' , `${Number(coins) + 1}`);
         h1.textContent = `${(Number(coins) + 1).toLocaleString()}`;
-
-        localStorage.setItem('power', `${Number(power) - 1}`);
+    
+        localStorage.setItem('power' , `${Number(power) - 1}`);
         body.querySelector('#power').textContent = `${Number(power) - 1}`;
-    }
+    } 
 
-    if (x < 150 && y < 150) {
+    if(x < 150 && y < 150){
         image.style.transform = 'translate(-0.25rem, -0.25rem) skewY(-10deg) skewX(5deg)';
-    } else if (x < 150 && y > 150) {
+    }
+    else if (x < 150 && y > 150){
         image.style.transform = 'translate(-0.25rem, 0.25rem) skewY(-10deg) skewX(5deg)';
-    } else if (x > 150 && y > 150) {
+    }
+    else if (x > 150 && y > 150){
         image.style.transform = 'translate(0.25rem, 0.25rem) skewY(10deg) skewX(-5deg)';
-    } else if (x > 150 && y < 150) {
+    }
+    else if (x > 150 && y < 150){
         image.style.transform = 'translate(0.25rem, -0.25rem) skewY(10deg) skewX(-5deg)';
     }
 
-    setTimeout(() => {
+    setTimeout(()=>{
         image.style.transform = 'translate(0px, 0px)';
     }, 100);
 
     body.querySelector('.progress').style.width = `${(100 * power) / total}%`;
+};
 
-    animateNumber(); // Вызов функции анимации
-}
-
-function animateNumber() {
-    var numberElement = document.getElementById('animated-number');
-    numberElement.classList.remove('hidden');
-
-    // Сбрасываем анимацию
-    numberElement.style.animation = 'none';
-    numberElement.offsetHeight; // Перезапуск анимации
-    numberElement.style.animation = null;
-
-    setTimeout(() => {
-        numberElement.classList.add('hidden');
-    }, 1000); // Время, через которое элемент снова скрывается
-
-    // Начальная позиция анимации
-    numberElement.style.top = '50%'; 
-    numberElement.style.left = '50%'; 
-    numberElement.classList.remove('hidden');
-}
-
-// Установка начальных значений прогресса
-document.addEventListener('DOMContentLoaded', () => {
-    body.querySelector('.progress').style.width = `${(100 * localStorage.getItem('power')) / total}%`;
-});
-
-setInterval(() => {
-    count = localStorage.getItem('count');
-    power = localStorage.getItem('power');
-    if (Number(total) > power) {
-        localStorage.setItem('power', `${Number(power) + Number(count)}`);
-        body.querySelector('#power').textContent = `${Number(power) + Number(count)}`;
-        body.querySelector('.progress').style.width = `${(100 * power) / total}%`;
-    }
-}, 1000);
-
-
+image.addEventListener('click', handleClick);
+image.addEventListener('touchstart', handleClick);
 
 setInterval(()=> {
     count = localStorage.getItem('count')
