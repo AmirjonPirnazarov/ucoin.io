@@ -32,8 +32,11 @@ if (count == null) {
     localStorage.setItem('count', '1');
 }
 
-image.addEventListener('touchend', (e) => {
-    e.preventDefault(); // Предотвращаем стандартное поведение, чтобы не возникало дополнительных событий
+image.addEventListener('click', clickHandler);
+image.addEventListener('touchstart', clickHandler);
+
+function clickHandler(e) {
+    e.preventDefault(); // Предотвращаем стандартное действие, чтобы избежать двойного нажатия на мобильных устройствах
 
     navigator.vibrate(5);
 
@@ -49,21 +52,15 @@ image.addEventListener('touchend', (e) => {
     }
 
     const animatedNumber = document.getElementById('animated-number');
-    animatedNumber.style.top = `${e.changedTouches[0].clientY - 20}px`; // Смещение на 20 пикселей вверх
-    animatedNumber.style.left = `${e.changedTouches[0].clientX - 10}px`; // Смещение на 10 пикселей влево
+    animatedNumber.style.top = `${e.clientY - 20}px`; // Смещение на 20 пикселей вверх
+    animatedNumber.style.left = `${e.clientX - 10}px`; // Смещение на 10 пикселей влево
     animatedNumber.classList.remove('hidden');
     animatedNumber.style.animation = 'none';
     animatedNumber.offsetHeight; // Trigger reflow
     animatedNumber.style.animation = null;
 
-    setTimeout(() => {
-        animatedNumber.classList.add('hidden');
-    }, 1000); // Ждем 1 секунду (1000 миллисекунд) перед скрытием +1
-
     body.querySelector('.progress').style.width = `${(100 * power) / total}%`;
-});
-
-
+}
 
 setInterval(() => {
     count = localStorage.getItem('count');
