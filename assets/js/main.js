@@ -56,8 +56,13 @@ image.addEventListener('touchend', (e) => {
     animatedNumber.offsetHeight; // Trigger reflow
     animatedNumber.style.animation = null;
 
+    setTimeout(() => {
+        animatedNumber.classList.add('hidden');
+    }, 1000); // Ждем 1 секунду (1000 миллисекунд) перед скрытием +1
+
     body.querySelector('.progress').style.width = `${(100 * power) / total}%`;
 });
+
 
 
 setInterval(() => {
