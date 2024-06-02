@@ -34,21 +34,32 @@ body {
 
 #animated-number {
     position: absolute;
-    font-size: 25px;
+    font-size: 2rem;
     color: #fff;
-    animation: moveUp 1s forwards;
+    animation: fadeOut 1s forwards;
+    pointer-events: none; /* Чтобы +1 не мешала кликам */
+    z-index: 10; /* Добавляем z-index */
 }
 
-@keyframes moveUp {
+@keyframes fadeOut {
     0% {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateY(0);
     }
     100% {
-        transform: translateY(-50px);
         opacity: 0;
+        transform: translateY(-25px);
     }
 }
+
+#coin {
+    transition: filter 0.3s;
+}
+
+#coin:active {
+    filter: brightness(0.8);
+}
+
 
 .haeder {
     display: flex;
