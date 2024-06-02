@@ -89,22 +89,7 @@
 
 
     <script src="./assets/js/main.js"></script>
-    <script>
-        function animateNumber() {
-            var numberElement = document.getElementById('animated-number');
-            numberElement.classList.remove('hidden');
-            
-            // Reset the animation
-            numberElement.style.animation = 'none';
-            numberElement.offsetHeight; // Trigger reflow
-            numberElement.style.animation = null;
-
-            numberElement.classList.add('hidden');
-            numberElement.style.top = '50%';  // Установите начальную позицию по вашему усмотрению
-            numberElement.style.left = '50%'; // Установите начальную позицию по вашему усмотрению
-            numberElement.classList.remove('hidden');
-        }
-    </script>
+    
 
 
 </body>
