@@ -32,7 +32,9 @@ if (count == null) {
     localStorage.setItem('count', '1');
 }
 
-image.addEventListener('click', (e) => {
+image.addEventListener('touchend', (e) => {
+    e.preventDefault(); // Предотвращаем стандартное поведение, чтобы не возникало дополнительных событий
+
     navigator.vibrate(5);
 
     coins = localStorage.getItem('coins');
@@ -47,8 +49,8 @@ image.addEventListener('click', (e) => {
     }
 
     const animatedNumber = document.getElementById('animated-number');
-    animatedNumber.style.top = `${e.clientY - 20}px`; // Смещение на 20 пикселей вверх
-    animatedNumber.style.left = `${e.clientX - 10}px`; // Смещение на 10 пикселей влево
+    animatedNumber.style.top = `${e.changedTouches[0].clientY - 20}px`; // Смещение на 20 пикселей вверх
+    animatedNumber.style.left = `${e.changedTouches[0].clientX - 10}px`; // Смещение на 10 пикселей влево
     animatedNumber.classList.remove('hidden');
     animatedNumber.style.animation = 'none';
     animatedNumber.offsetHeight; // Trigger reflow
@@ -56,6 +58,7 @@ image.addEventListener('click', (e) => {
 
     body.querySelector('.progress').style.width = `${(100 * power) / total}%`;
 });
+
 
 setInterval(() => {
     count = localStorage.getItem('count');
