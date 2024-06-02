@@ -15,7 +15,7 @@ if (coins == null) {
 }
 
 if (total == null) {
-    localStorage.setItem('total', '500')
+    localStorage.setItem('total', '500');
     body.querySelector('#total').textContent = '/500';
 } else {
     body.querySelector('#total').textContent = `/${total}`;
@@ -29,56 +29,33 @@ if (power == null) {
 }
 
 if (count == null) {
-    localStorage.setItem('count', '1')
+    localStorage.setItem('count', '1');
 }
 
-const handleClick = (e) => {
-    let x, y;
-    if (e.type === 'click') {
-        x = e.offsetX;
-        y = e.offsetY;
-    } else if (e.type === 'touchstart') {
-        const rect = e.target.getBoundingClientRect();
-        const touch = e.touches[0];
-        x = touch.clientX - rect.left;
-        y = touch.clientY - rect.top;
-    }
-
-    // Убедитесь, что это выполняется после взаимодействия пользователя
-    if (navigator.vibrate) {
-        navigator.vibrate(5);
-    }
+image.addEventListener('click', (e) => {
+    navigator.vibrate(5);
 
     coins = localStorage.getItem('coins');
     power = localStorage.getItem('power');
-    
+
     if (Number(power) > 0) {
         localStorage.setItem('coins', `${Number(coins) + 1}`);
         h1.textContent = `${(Number(coins) + 1).toLocaleString()}`;
-    
+
         localStorage.setItem('power', `${Number(power) - 1}`);
         body.querySelector('#power').textContent = `${Number(power) - 1}`;
     }
 
-    if (x < 150 && y < 150) {
-        image.style.transform = 'translate(-0.25rem, -0.25rem) skewY(-10deg) skewX(5deg)';
-    } else if (x < 150 && y > 150) {
-        image.style.transform = 'translate(-0.25rem, 0.25rem) skewY(-10deg) skewX(5deg)';
-    } else if (x > 150 && y > 150) {
-        image.style.transform = 'translate(0.25rem, 0.25rem) skewY(10deg) skewX(-5deg)';
-    } else if (x > 150 && y < 150) {
-        image.style.transform = 'translate(0.25rem, -0.25rem) skewY(10deg) skewX(-5deg)';
-    }
-
-    setTimeout(() => {
-        image.style.transform = 'translate(0px, 0px)';
-    }, 100);
+    const animatedNumber = document.getElementById('animated-number');
+    animatedNumber.style.top = `${e.clientY - 20}px`; // Смещение на 20 пикселей вверх
+    animatedNumber.style.left = `${e.clientX - 10}px`; // Смещение на 10 пикселей влево
+    animatedNumber.classList.remove('hidden');
+    animatedNumber.style.animation = 'none';
+    animatedNumber.offsetHeight; // Trigger reflow
+    animatedNumber.style.animation = null;
 
     body.querySelector('.progress').style.width = `${(100 * power) / total}%`;
-};
-
-image.addEventListener('click', handleClick, { passive: true });
-image.addEventListener('touchstart', handleClick, { passive: true });
+});
 
 setInterval(() => {
     count = localStorage.getItem('count');
